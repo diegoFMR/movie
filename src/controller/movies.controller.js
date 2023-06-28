@@ -55,9 +55,13 @@ async function getReviewsByMovie(req, res){
     try{
         const response = await connection
         .raw("select reviews.* from reviews inner join movies on movies.movie_id = reviews.movie_id where reviews.movie_id="+movieId);
+        const critics = await connection('critics')
+            .innerJoin('reviews', 'reviews.critic_id','critics.critic_id')
+            .groupBy('critics.critic_id')
+            .orderBy('critics.critic_id');
         const finalResponse = [];
         for (let index = 0; index < response.length; index++) {
-            finalResponse.push({...response[index], critic: { preferred_name: "string", surname: "String", organization_name: "string"  }});
+            finalResponse.push({...response[index], critic: critics[0]});
             
         }
 

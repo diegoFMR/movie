@@ -13,15 +13,14 @@ async function put(req, res){
         }else{
             response = await connection('reviews').where('review_id', reviewId).update(data);
             response = await connection('reviews').where('review_id', reviewId).groupBy('movie_id').orderBy('movie_id');
-
+            const critic = await connection('critics')
+                .innerJoin('reviews', 'reviews.critic_id','critics.critic_id')
+                .groupBy('critics.critic_id')
+                .orderBy('critics.critic_id');
             for (let index = 0; index < response.length; index++) {
-                finalResponse.push({...response[index], critic: { preferred_name: "string", surname: "String", organization_name: "string"  }});
-                
+                finalResponse.push({...response[index], critic: critic[0]});   
             }
-
-        }
-        
-
+        }    
         if(response.length > 0 ){
             return res.status(200).send({data: finalResponse[0]});
         }else{
