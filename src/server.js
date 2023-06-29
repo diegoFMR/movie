@@ -5,10 +5,21 @@ const knex = require("./db/connection");
 
 const listener = () => console.log(`Listening on Port ${PORT}!`);
 
-knex.migrate
-  .latest()
-  .then((migrations) => {
-    console.log("migrations", migrations);
+async function start(){
+  try{
+    await knex.migrate.latest();
+    await knex.seed.run();
     app.listen(PORT, listener);
-  })
-  .catch(console.error);
+  }catch(e){
+    console.log(e);
+  }
+}
+
+
+start();
+// knex.migrate
+//   .latest()
+//   .then((migrations) => {
+    
+//   })
+//   .catch(console.error);

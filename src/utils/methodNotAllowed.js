@@ -1,6 +1,5 @@
 function methodNotAllowed(request, response, next) {
-    next({
-      status: 405,
+    return response.status(405).send({
       message: `${request.method} not allowed for ${request.originalUrl}`,
     });
   }

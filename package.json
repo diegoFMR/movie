@@ -13,10 +13,10 @@
     "reset": "npm run rollback && npm run migrate && npm run seed",
     "rollback": "knex migrate:rollback",
     "seed": "knex seed:run",
-    "start": "node src/server.js",
+    "start": "cls && node src/server.js",
     "start:dev": "nodemon src/server.js",
     "start:solution": "docker-compose up --build",
-    "test": "jest",
+    "test": "cls && jest",
     "e": "cls && jest theaters.test.js",
     "test:solution": "docker-compose build && docker-compose run --rm api npm test && docker-compose down"
   },
